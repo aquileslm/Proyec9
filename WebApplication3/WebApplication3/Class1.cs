@@ -16,7 +16,7 @@ namespace WebApplication3
 
         private const String USER = "postgres";
 
-        private const String PASSWORD = "";
+        private const String PASSWORD = "admin";
 
         private const String DATABASE = "proyectodes9";
         private NpgsqlConnection connection;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebApplication3;
 
 namespace WebApplication3.Models
 {
@@ -79,6 +80,11 @@ namespace WebApplication3.Models
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 4)]
+        [Display(Name = "Usuario")]
+        public string User { get; set; }
     }
 
     public class ResetPasswordViewModel

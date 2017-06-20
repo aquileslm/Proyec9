@@ -10,33 +10,39 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication3.Models;
 
+
+
+
 namespace WebApplication3.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
-
+        private ApplicationSignInManager Iniciodemanejo10;
+        private ApplicationUserManager manejadordeusuaro10;
+        private String correo, contrasena, nombre_usuario;
         public AccountController()
         {
+
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+
+
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            manejadordeusuaro10 = userManager;
+            Iniciodemanejo10 = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return Iniciodemanejo10 ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                Iniciodemanejo10 = value;
             }
         }
 
@@ -44,24 +50,30 @@ namespace WebApplication3.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return manejadordeusuaro10 ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                manejadordeusuaro10 = value;
             }
         }
 
-        //
-        // GET: /Account/Login
+
+        //GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(/*RegisterViewModel vistalogin, EventArgs e*/)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            /* string correo1, contrasena1;
+             correo1 = Convert.ToString(vistalogin.Email);
+             contrasena1 = Convert.ToString(vistalogin.Password);
+             var Conectionx1 = new Conectionx1();
+             Conectionx1.conectar();
+             Conectionx1.IniciarLogin(correo1, contrasena1);*/
+            // ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        //
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -75,7 +87,7 @@ namespace WebApplication3.Controllers
 
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -91,7 +103,7 @@ namespace WebApplication3.Controllers
             }
         }
 
-        //
+
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
@@ -104,7 +116,7 @@ namespace WebApplication3.Controllers
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
+
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
@@ -120,7 +132,7 @@ namespace WebApplication3.Controllers
             // Si un usuario introduce códigos incorrectos durante un intervalo especificado de tiempo, la cuenta del usuario 
             // se bloqueará durante un período de tiempo especificado. 
             // Puede configurar el bloqueo de la cuenta en IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -134,16 +146,23 @@ namespace WebApplication3.Controllers
             }
         }
 
-        //
+
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(/*RegisterViewModel vista, EventArgs e*/)
         {
+
+            /*correo = Convert.ToString(vista.Email);
+            contrasena = Convert.ToString(vista.Password);
+            nombre_usuario = Convert.ToString(vista.User);
+            var Conectionx1 = new Conectionx1();
+            Conectionx1.conectar();
+            Conectionx1.Registro(nombre_usuario, correo, contrasena);*/
             return View();
         }
 
-        //
-        // POST: /Account/Register
+
+        //POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -151,12 +170,12 @@ namespace WebApplication3.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.User, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                     // Enviar correo electrónico con este vínculo
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -172,8 +191,8 @@ namespace WebApplication3.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/ConfirmEmail
+
+        //GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -185,16 +204,16 @@ namespace WebApplication3.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
-        // GET: /Account/ForgotPassword
+
+        //GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
+
+        //POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -211,17 +230,17 @@ namespace WebApplication3.Controllers
 
                 // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                 // Enviar correo electrónico con este vínculo
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Para restablecer la contraseña, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Para restablecer la contraseña, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);
         }
 
-        //
+
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
@@ -229,7 +248,7 @@ namespace WebApplication3.Controllers
             return View();
         }
 
-        //
+
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
@@ -237,8 +256,8 @@ namespace WebApplication3.Controllers
             return code == null ? View("Error") : View();
         }
 
-        //
-        // POST: /Account/ResetPassword
+
+        //POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -385,8 +404,8 @@ namespace WebApplication3.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
+
+        //POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -407,16 +426,16 @@ namespace WebApplication3.Controllers
         {
             if (disposing)
             {
-                if (_userManager != null)
+                if (manejadordeusuaro10 != null)
                 {
-                    _userManager.Dispose();
-                    _userManager = null;
+                    manejadordeusuaro10.Dispose();
+                    manejadordeusuaro10 = null;
                 }
 
-                if (_signInManager != null)
+                if (manejadordeusuaro10 != null)
                 {
-                    _signInManager.Dispose();
-                    _signInManager = null;
+                    manejadordeusuaro10.Dispose();
+                    manejadordeusuaro10 = null;
                 }
             }
 

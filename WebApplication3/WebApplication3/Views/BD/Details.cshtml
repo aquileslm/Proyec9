@@ -1,0 +1,33 @@
+﻿
+@model WebApplication3.Models.OfertasModels
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>@Model.nombreoferta</h2>
+
+<div class="row">
+    <div class="col-md-4"><img src="~/Media/promo1.jpg" class="img-descrip" /></div>
+    <div class="col-md-8">
+        <p>@Model.descrip</p>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-4">
+        <p class="alert-warning">@Model.fechaf</p>
+        <p class="alert-info">Cupones Disponibles: <b>35</b></p>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-sm-12"><button class="btn btn-default" type="button">Comprar YA!</button></div>
+        </div>
+
+
+    </div>
+    <div class="col-md-4">Precio : @Model.precio</div>
+</div>
+
