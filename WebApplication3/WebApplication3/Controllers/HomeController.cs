@@ -40,5 +40,12 @@ namespace WebApplication3.Controllers
 
             return View();
         }
+
+        public ActionResult Carrito()
+        {
+
+
+            return View();
+        }
     }
 }
