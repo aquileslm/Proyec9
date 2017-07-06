@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Carrito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Carrito</h2>
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-sm-12">
+
+            <table id="itemsCarrito" style="width:100%">
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Eliminar</th>
+                </tr>
+
+                <tr>
+                    <td>Una breve descripcion</td>
+                    <td class="text-center"><input type="number" min="1" max="99" step="1" /></td>
+                    <td class="text-center">$50.00</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-md">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>Una breve descripcion</td>
+                    <td class="text-center"><input type="number" min="1" max="99" step="1" /></td>
+                    <td class="text-center">$50.00</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-md">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Una breve descripcion</td>
+                    <td class="text-center"><input type="number" min="1" max="99" step="1" /></td>
+                    <td class="text-center">$50.00</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-md">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar
+                        </button>
+                    </td>
+                </tr>
+
+
+            </table>
+
+
+
+
+
+        </div>
+        
+
+    </div>
+
+
+    <hr />
+    <div class="row">
+        
+        <div class="col-sm-12">
+            <div class="col-sm-6 text-right total-text">Precio total: <b>$150.00</b></div>
+        <button type="button" class="btn btn-success btn-md">
+            Realizar Compras <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
+        </button>
+            </div>
+    </div>
+
+</div>
